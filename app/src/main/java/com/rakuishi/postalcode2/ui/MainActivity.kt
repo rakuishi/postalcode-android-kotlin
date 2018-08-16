@@ -7,12 +7,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private var bottomNavigationViewPresenter: MainBottomNavigationViewPresenter? = null
+    lateinit var bottomNavigationBehavior: MainBottomNavigationBehavior
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        bottomNavigationViewPresenter = MainBottomNavigationViewPresenter(navigation, supportFragmentManager, R.id.container)
+        bottomNavigationBehavior =
+                MainBottomNavigationBehavior(navigation, supportFragmentManager, R.id.container)
     }
 }

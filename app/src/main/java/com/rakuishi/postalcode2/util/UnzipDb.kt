@@ -6,7 +6,7 @@ import timber.log.Timber
 import java.io.FileOutputStream
 import java.util.zip.ZipInputStream
 
-class UnzipDbUtil {
+class UnzipDb {
 
     companion object {
 

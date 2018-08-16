@@ -8,9 +8,9 @@ import android.view.MenuItem
 import com.rakuishi.postalcode2.R
 import com.rakuishi.postalcode2.util.forEach
 
-class MainBottomNavigationViewPresenter(private val bottomNavigationView: BottomNavigationView,
-                                        private val fragmentManager: FragmentManager,
-                                        private val containerId: Int)
+class MainBottomNavigationBehavior(bottomNavigationView: BottomNavigationView,
+                                   private val fragmentManager: FragmentManager,
+                                   private val containerId: Int)
     : BottomNavigationView.OnNavigationItemSelectedListener {
 
     private var tabs: SparseArray<Int> = SparseArray()
@@ -62,18 +62,10 @@ class MainBottomNavigationViewPresenter(private val bottomNavigationView: Bottom
 
     private fun getFragment(position: Int): Fragment {
         return when (position) {
-            TAB_LIST -> {
-                ListFragment.createInstance()
-            }
-            TAB_SEARCH -> {
-                SearchFragment.createInstance()
-            }
-            TAB_BOOKMARK -> {
-                BookmarkFragment.createInstance()
-            }
-            else -> {
-                throw IllegalStateException("This position: $position is not supported.")
-            }
+            TAB_LIST -> ListFragment.createInstance()
+            TAB_SEARCH -> SearchFragment.createInstance()
+            TAB_BOOKMARK -> BookmarkFragment.createInstance()
+            else -> throw IllegalStateException("This position: $position is not supported.")
         }
     }
 
