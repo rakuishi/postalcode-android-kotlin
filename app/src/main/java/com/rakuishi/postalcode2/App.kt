@@ -13,8 +13,6 @@ class App : Application() {
         super.onCreate()
         setupTimber()
         setupPostalCodeDao()
-
-        Timber.d("prefecture size: ${postalCodeDao.findPrefectures().size}")
     }
 
     private fun setupTimber() {

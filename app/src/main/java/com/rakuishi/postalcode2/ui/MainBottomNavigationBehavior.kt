@@ -62,7 +62,7 @@ class MainBottomNavigationBehavior(bottomNavigationView: BottomNavigationView,
 
     private fun getFragment(position: Int): Fragment {
         return when (position) {
-            TAB_LIST -> ListFragment.createInstance()
+            TAB_LIST -> PrefectureFragment.createInstance()
             TAB_SEARCH -> SearchFragment.createInstance()
             TAB_BOOKMARK -> BookmarkFragment.createInstance()
             else -> throw IllegalStateException("This position: $position is not supported.")
