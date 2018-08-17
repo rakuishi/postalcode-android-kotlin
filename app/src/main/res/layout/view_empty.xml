@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="@dimen/dp_128"
+            android:layout_height="@dimen/dp_128"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/dp_8"
+            android:tint="@color/divider"
+            tools:src="@drawable/ic_search_black_24dp" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:paddingLeft="@dimen/dp_40"
+            android:paddingRight="@dimen/dp_40"
+            android:textColor="@color/secondary_text"
+            android:textSize="@dimen/sp_20"
+            tools:text="郵便番号または地名から検索" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

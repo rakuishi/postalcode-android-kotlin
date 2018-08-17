@@ -3,4 +3,6 @@
     <string name="title_prefecture">都道府県</string>
     <string name="title_search">検索</string>
     <string name="title_bookmark">ブックマーク</string>
+    <string name="empty_search">郵便番号または地名から検索</string>
+    <string name="empty_bookmark">素早くアクセスするために、お気に入りアイテムに追加</string>
 </resources>

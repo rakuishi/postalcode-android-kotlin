@@ -48,7 +48,8 @@ class PrefectureFragment : Fragment() {
             adapter.onItemClick = { postalCode -> Timber.d(postalCode.toString()) }
 
             val linearLayoutManager = LinearLayoutManager(context)
-            it.layoutManager = LinearLayoutManager(context)
+
+            it.layoutManager = linearLayoutManager
             it.addItemDecoration(DividerItemDecoration(context, linearLayoutManager.orientation))
             it.adapter = adapter
         }
