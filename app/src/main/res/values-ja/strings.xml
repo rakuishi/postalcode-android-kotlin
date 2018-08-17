@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">郵便番号</string>
+    <string name="title_prefecture">都道府県</string>
+    <string name="title_search">検索</string>
+    <string name="title_bookmark">ブックマーク</string>
+</resources>
