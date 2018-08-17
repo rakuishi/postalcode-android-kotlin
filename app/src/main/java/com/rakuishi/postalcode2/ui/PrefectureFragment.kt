@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import com.rakuishi.postalcode2.App
 import com.rakuishi.postalcode2.R
 import com.rakuishi.postalcode2.persistence.PostalCodeDao
-import kotlinx.android.synthetic.main.fragment_recycler_view.*
+import kotlinx.android.synthetic.main.fragment_toolbar_recycler_view.*
 import timber.log.Timber
 
 class PrefectureFragment : Fragment() {
@@ -28,12 +28,13 @@ class PrefectureFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_recycler_view, container, false)
+        return inflater.inflate(R.layout.fragment_toolbar_recycler_view, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setupRecyclerView()
+        setupToolbar()
     }
 
     private fun inject() {
@@ -50,6 +51,12 @@ class PrefectureFragment : Fragment() {
             it.layoutManager = LinearLayoutManager(context)
             it.addItemDecoration(DividerItemDecoration(context, linearLayoutManager.orientation))
             it.adapter = adapter
+        }
+    }
+
+    private fun setupToolbar() {
+        toolbar.also {
+            it.setTitle(R.string.title_prefecture)
         }
     }
 }
