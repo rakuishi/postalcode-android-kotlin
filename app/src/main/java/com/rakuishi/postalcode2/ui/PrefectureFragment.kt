@@ -9,10 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.rakuishi.postalcode2.App
+import com.rakuishi.postalcode2.Constant.Companion.ViewType
 import com.rakuishi.postalcode2.R
 import com.rakuishi.postalcode2.persistence.PostalCodeDao
 import kotlinx.android.synthetic.main.fragment_toolbar_recycler_view.*
-import timber.log.Timber
 
 class PrefectureFragment : Fragment() {
 
@@ -44,13 +44,11 @@ class PrefectureFragment : Fragment() {
 
     private fun setupRecyclerView() {
         recyclerView.also {
-            val adapter = PostalCodeListAdapter(postalCodeDao.findPrefectures())
-            adapter.onItemClick = { postalCode -> Timber.d(postalCode.toString()) }
+            val adapter = PostalCodeListAdapter(ViewType.PREFECTURE, postalCodeDao.findPrefectures())
+            adapter.onItemClick = { postalCode -> PostalCodeActivity.start(context!!, ViewType.CITY, postalCode) }
 
-            val linearLayoutManager = LinearLayoutManager(context)
-
-            it.layoutManager = linearLayoutManager
-            it.addItemDecoration(DividerItemDecoration(context, linearLayoutManager.orientation))
+            it.layoutManager = LinearLayoutManager(context)
+            it.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             it.adapter = adapter
         }
     }

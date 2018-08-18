@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.rakuishi.postalcode2.Constant.Companion.ViewType
 import com.rakuishi.postalcode2.R
 import com.rakuishi.postalcode2.persistence.PostalCode
 
-class PostalCodeListAdapter(private val postalCodes: List<PostalCode>)
+class PostalCodeListAdapter(private val viewType: ViewType,
+                            private val postalCodes: List<PostalCode>)
     : RecyclerView.Adapter<PostalCodeListAdapter.ViewHolder>() {
 
     var onItemClick: ((PostalCode) -> Unit)? = null

@@ -3,6 +3,7 @@ package com.rakuishi.postalcode2.persistence
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
+import java.io.Serializable
 
 @Entity(tableName = "postalcode")
 data class PostalCode(@PrimaryKey @ColumnInfo(name = "code") val code: String,
@@ -14,3 +15,4 @@ data class PostalCode(@PrimaryKey @ColumnInfo(name = "code") val code: String,
                       @ColumnInfo(name = "prefecture_yomi") val prefectureYomi: String,
                       @ColumnInfo(name = "city_yomi") val cityYomi: String,
                       @ColumnInfo(name = "street_yomi") val streetYomi: String)
+    : Serializable
