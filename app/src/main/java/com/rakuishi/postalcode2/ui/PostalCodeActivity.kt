@@ -3,7 +3,6 @@ package com.rakuishi.postalcode2.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.AppCompatActivity
 import com.rakuishi.postalcode2.Constant.Companion.ViewType
@@ -11,7 +10,7 @@ import com.rakuishi.postalcode2.R
 import com.rakuishi.postalcode2.persistence.PostalCode
 import kotlinx.android.synthetic.main.activity_postal_code.*
 
-class PostalCodeActivity : AppCompatActivity() {
+class PostalCodeActivity : AppCompatActivity(), CityOrStreetFragment.Callback {
 
     companion object {
         private const val KEY_VIEW_TYPE = "view_type"
@@ -25,18 +24,24 @@ class PostalCodeActivity : AppCompatActivity() {
         }
     }
 
+    private lateinit var viewType: ViewType
+    private lateinit var postalCode: PostalCode
+    private var titles: MutableList<String> = ArrayList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupParams()
+
         setContentView(R.layout.activity_postal_code)
         setSupportActionBar(toolbar)
 
-        setupContainer()
+        replaceFragment(viewType, postalCode)
     }
 
     override fun onBackPressed() {
-        // TODO: Android 標準の戻る動作に popBackStack が含まれているため、その挙動に任せる
-        if (supportFragmentManager.fragments.size > 1) {
+        if (supportFragmentManager.backStackEntryCount > 1) {
             supportFragmentManager.popBackStack()
+            titles.removeAt(titles.lastIndex)
             updateToolbar()
             return
         }
@@ -49,17 +54,24 @@ class PostalCodeActivity : AppCompatActivity() {
         return super.onSupportNavigateUp()
     }
 
-    private fun setupContainer() {
-        val viewType = intent.getSerializableExtra(KEY_VIEW_TYPE) as ViewType
-        val postalCode = intent.getSerializableExtra(KEY_POSTAL_CODE) as PostalCode
-        replaceFragment(when (viewType) {
+    private fun setupParams() {
+        viewType = intent.getSerializableExtra(KEY_VIEW_TYPE) as ViewType
+        postalCode = intent.getSerializableExtra(KEY_POSTAL_CODE) as PostalCode
+    }
+
+    private fun replaceFragment(viewType: ViewType, postalCode: PostalCode) {
+        val fragment = when (viewType) {
             ViewType.PREFECTURE, ViewType.DETAIL -> throw IllegalStateException("This viewType: $viewType is not supported.")
             ViewType.CITY -> CityOrStreetFragment.createInstance(viewType, postalCode.prefectureId)
             ViewType.STREET -> CityOrStreetFragment.createInstance(viewType, postalCode.cityId)
-        })
-    }
+        }
 
-    private fun replaceFragment(fragment: Fragment) {
+        val title = when (viewType) {
+            ViewType.PREFECTURE, ViewType.DETAIL -> throw IllegalStateException("This viewType: $viewType is not supported.")
+            ViewType.CITY -> postalCode.prefecture
+            ViewType.STREET -> postalCode.city
+        }
+
         supportFragmentManager
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
@@ -67,6 +79,7 @@ class PostalCodeActivity : AppCompatActivity() {
                 .addToBackStack(null)
                 .commit()
 
+        titles.add(title)
         updateToolbar()
     }
 
@@ -74,6 +87,15 @@ class PostalCodeActivity : AppCompatActivity() {
         supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
             it.setDisplayShowHomeEnabled(true)
+            it.title = titles.last()
         }
     }
+
+    // region CityOrStreetFragment.Callback
+
+    override fun onItemClick(viewType: ViewType, postalCode: PostalCode) {
+        replaceFragment(viewType, postalCode)
+    }
+
+    // endregion
 }

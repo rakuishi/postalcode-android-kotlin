@@ -22,8 +22,23 @@ class PostalCodeListAdapter(private val viewType: ViewType,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val postalCode = postalCodes[position]
-        holder.primaryTextView.text = postalCode.prefecture
-        holder.secondaryTextView.visibility = View.GONE
+
+        when (viewType) {
+            ViewType.PREFECTURE -> {
+                holder.primaryTextView.text = postalCode.prefecture
+                holder.secondaryTextView.visibility = View.GONE
+            }
+            ViewType.CITY -> {
+                holder.primaryTextView.text = postalCode.city
+                holder.secondaryTextView.text = postalCode.cityYomi
+            }
+            ViewType.STREET -> {
+                holder.primaryTextView.text = postalCode.street
+                holder.secondaryTextView.text = postalCode.streetYomi
+            }
+            ViewType.DETAIL -> throw IllegalStateException("This viewType: $viewType is not supported.")
+        }
+
         holder.itemView.setOnClickListener { onItemClick?.invoke(postalCode) }
     }
 

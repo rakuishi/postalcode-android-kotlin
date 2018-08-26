@@ -11,9 +11,9 @@ import android.view.ViewGroup
 import com.rakuishi.postalcode2.App
 import com.rakuishi.postalcode2.Constant.Companion.ViewType
 import com.rakuishi.postalcode2.R
+import com.rakuishi.postalcode2.persistence.PostalCode
 import com.rakuishi.postalcode2.persistence.PostalCodeDao
 import kotlinx.android.synthetic.main.fragment_toolbar_recycler_view.*
-import timber.log.Timber
 
 class CityOrStreetFragment : Fragment() {
 
@@ -30,13 +30,19 @@ class CityOrStreetFragment : Fragment() {
                 }
     }
 
+    interface Callback {
+        fun onItemClick(viewType: ViewType, postalCode: PostalCode)
+    }
+
     private lateinit var postalCodeDao: PostalCodeDao
     private lateinit var viewType: ViewType
     private var prefectureOrCityId: Int = 0
+    private lateinit var callback: Callback
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         inject()
+        if (context is Callback) callback = context
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -70,8 +76,8 @@ class CityOrStreetFragment : Fragment() {
                     })
             adapter.onItemClick = when (viewType) {
                 ViewType.PREFECTURE, ViewType.DETAIL -> throw IllegalStateException("This viewType: $viewType is not supported.")
-                ViewType.CITY -> { postalCode -> Timber.d(postalCode.toString()) }
-                ViewType.STREET -> { postalCode -> Timber.d(postalCode.toString()) }
+                ViewType.CITY -> { postalCode -> callback.onItemClick(ViewType.STREET, postalCode) }
+                ViewType.STREET -> { postalCode -> callback.onItemClick(ViewType.DETAIL, postalCode) }
             }
 
             it.layoutManager = LinearLayoutManager(context)

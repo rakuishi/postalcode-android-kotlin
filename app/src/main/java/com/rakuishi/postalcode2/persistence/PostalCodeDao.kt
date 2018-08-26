@@ -12,6 +12,6 @@ interface PostalCodeDao {
     @Query("SELECT * FROM postalcode WHERE prefecture_id = :prefectureId GROUP BY city_id, city, city_yomi")
     fun findCities(prefectureId: Int): List<PostalCode>
 
-    @Query("SELECT * FROM postalcode WHERE city_id = :cityId")
+    @Query("SELECT * FROM postalcode WHERE city_id = :cityId AND street != ''")
     fun findStreets(cityId: Int): List<PostalCode>
 }
