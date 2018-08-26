@@ -38,14 +38,14 @@ class PrefectureFragment : Fragment() {
     }
 
     private fun inject() {
-        val app = context!!.applicationContext as App
+        val app = requireContext().applicationContext as App
         postalCodeDao = app.postalCodeDao
     }
 
     private fun setupRecyclerView() {
         recyclerView.also {
             val adapter = PostalCodeListAdapter(ViewType.PREFECTURE, postalCodeDao.findPrefectures())
-            adapter.onItemClick = { postalCode -> PostalCodeActivity.start(context!!, ViewType.CITY, postalCode) }
+            adapter.onItemClick = { postalCode -> PostalCodeActivity.start(requireContext(), ViewType.CITY, postalCode) }
 
             it.layoutManager = LinearLayoutManager(context)
             it.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))

@@ -50,7 +50,7 @@ class CityOrStreetFragment : Fragment() {
     }
 
     private fun inject() {
-        val app = context!!.applicationContext as App
+        val app = requireContext().applicationContext as App
         postalCodeDao = app.postalCodeDao
     }
 
