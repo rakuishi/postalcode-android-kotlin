@@ -5,4 +5,7 @@
     <string name="title_bookmark">ブックマーク</string>
     <string name="empty_search">郵便番号または地名から検索</string>
     <string name="empty_bookmark">素早くアクセスするために、お気に入りアイテムに追加</string>
+    <string name="postal_code">郵便番号</string>
+    <string name="address">住所</string>
+    <string name="pronunciation">読み</string>
 </resources>

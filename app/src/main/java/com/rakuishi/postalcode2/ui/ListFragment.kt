@@ -86,7 +86,7 @@ class ListFragment : Fragment(), PostalCodeListFragment.Callback {
 
     override fun onItemClick(viewType: ViewType, postalCode: PostalCode) {
         if (viewType == ViewType.DETAIL) {
-            // do something
+            PostalCodeDetailActivity.start(requireContext(), postalCode)
         } else {
             replaceFragment(viewType, postalCode)
         }

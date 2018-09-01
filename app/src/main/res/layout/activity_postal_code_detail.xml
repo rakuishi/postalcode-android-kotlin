@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_56" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dp_56">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.rakuishi.postalcode2.ui.TwoLineView
+                android:id="@+id/postalCodeView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:secondaryText="@string/postal_code"
+                tools:text="038-3615" />
+
+            <com.rakuishi.postalcode2.ui.TwoLineView
+                android:id="@+id/addressView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:secondaryText="@string/address"
+                tools:text="青森県弘前市青女子" />
+
+            <com.rakuishi.postalcode2.ui.TwoLineView
+                android:id="@+id/pronunciationView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:secondaryText="@string/pronunciation"
+                tools:text="あおもりけんひろさきしあおなご" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
