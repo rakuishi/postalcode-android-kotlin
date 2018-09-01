@@ -62,7 +62,7 @@ class MainBottomNavigationBehavior(bottomNavigationView: BottomNavigationView,
 
     private fun getFragment(position: Int): Fragment {
         return when (position) {
-            TAB_LIST -> PrefectureFragment.createInstance()
+            TAB_LIST -> ListFragment.createInstance()
             TAB_SEARCH -> SearchFragment.createInstance()
             TAB_BOOKMARK -> BookmarkFragment.createInstance()
             else -> throw IllegalStateException("This position: $position is not supported.")
@@ -81,6 +81,12 @@ class MainBottomNavigationBehavior(bottomNavigationView: BottomNavigationView,
             showFragmentAndCommitTransaction(position)
         }
         return true
+    }
+
+    fun consumeBackPress(): Boolean {
+        val name = getFragmentName(currentPosition)
+        val fragment = fragmentManager.findFragmentByTag(name)
+        return (fragment as? ListFragment)?.consumeBackPress() ?: false
     }
 
     companion object {

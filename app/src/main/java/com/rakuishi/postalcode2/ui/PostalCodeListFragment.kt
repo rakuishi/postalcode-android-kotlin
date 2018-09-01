@@ -15,17 +15,32 @@ import com.rakuishi.postalcode2.persistence.PostalCode
 import com.rakuishi.postalcode2.persistence.PostalCodeDao
 import kotlinx.android.synthetic.main.fragment_toolbar_recycler_view.*
 
-class CityOrStreetFragment : Fragment() {
+class PostalCodeListFragment : Fragment() {
 
     companion object {
         private const val KEY_VIEW_TYPE = "view_type"
         private const val KEY_ID = "id"
 
-        fun createInstance(viewType: ViewType, id: Int): CityOrStreetFragment =
-                CityOrStreetFragment().also {
+        fun createPrefectureInstance(): PostalCodeListFragment =
+                PostalCodeListFragment().also {
                     it.arguments = Bundle().also {
-                        it.putSerializable(KEY_VIEW_TYPE, viewType)
-                        it.putInt(KEY_ID, id)
+                        it.putSerializable(KEY_VIEW_TYPE, ViewType.PREFECTURE)
+                    }
+                }
+
+        fun createCityInstance(prefectureId: Int): PostalCodeListFragment =
+                PostalCodeListFragment().also {
+                    it.arguments = Bundle().also {
+                        it.putSerializable(KEY_VIEW_TYPE, ViewType.CITY)
+                        it.putInt(KEY_ID, prefectureId)
+                    }
+                }
+
+        fun createStreetInstance(cityId: Int): PostalCodeListFragment =
+                PostalCodeListFragment().also {
+                    it.arguments = Bundle().also {
+                        it.putSerializable(KEY_VIEW_TYPE, ViewType.STREET)
+                        it.putInt(KEY_ID, cityId)
                     }
                 }
     }
@@ -42,7 +57,7 @@ class CityOrStreetFragment : Fragment() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         inject()
-        if (context is Callback) callback = context
+        if (parentFragment is Callback) callback = parentFragment as Callback
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -67,22 +82,28 @@ class CityOrStreetFragment : Fragment() {
 
     private fun setupRecyclerView() {
         recyclerView.also {
-            val adapter = PostalCodeListAdapter(
-                    viewType,
-                    when (viewType) {
-                        ViewType.PREFECTURE, ViewType.DETAIL -> throw IllegalStateException("This viewType: $viewType is not supported.")
-                        ViewType.CITY -> postalCodeDao.findCities(prefectureOrCityId)
-                        ViewType.STREET -> postalCodeDao.findStreets(prefectureOrCityId)
-                    })
-            adapter.onItemClick = when (viewType) {
-                ViewType.PREFECTURE, ViewType.DETAIL -> throw IllegalStateException("This viewType: $viewType is not supported.")
-                ViewType.CITY -> { postalCode -> callback.onItemClick(ViewType.STREET, postalCode) }
-                ViewType.STREET -> { postalCode -> callback.onItemClick(ViewType.DETAIL, postalCode) }
-            }
+            val adapter = PostalCodeListAdapter(viewType, getPostalCodes())
+            adapter.onItemClick = onItemClick()
 
             it.layoutManager = LinearLayoutManager(context)
             it.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             it.adapter = adapter
         }
     }
+
+    private fun getPostalCodes(): List<PostalCode> =
+            when (viewType) {
+                ViewType.PREFECTURE -> postalCodeDao.findPrefectures()
+                ViewType.CITY -> postalCodeDao.findCities(prefectureOrCityId)
+                ViewType.STREET -> postalCodeDao.findStreets(prefectureOrCityId)
+                ViewType.DETAIL -> throw IllegalStateException("This viewType: $viewType is not supported.")
+            }
+
+    private fun onItemClick(): ((PostalCode) -> Unit)? =
+            when (viewType) {
+                ViewType.PREFECTURE -> { postalCode -> callback.onItemClick(ViewType.CITY, postalCode) }
+                ViewType.CITY -> { postalCode -> callback.onItemClick(ViewType.STREET, postalCode) }
+                ViewType.STREET -> { postalCode -> callback.onItemClick(ViewType.DETAIL, postalCode) }
+                ViewType.DETAIL -> throw IllegalStateException("This viewType: $viewType is not supported.")
+            }
 }

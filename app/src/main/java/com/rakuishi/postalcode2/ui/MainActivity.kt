@@ -16,4 +16,10 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationBehavior =
                 MainBottomNavigationBehavior(navigation, supportFragmentManager, R.id.container)
     }
+
+    override fun onBackPressed() {
+        if (!bottomNavigationBehavior.consumeBackPress()) {
+            super.onBackPressed()
+        }
+    }
 }
